@@ -9,8 +9,10 @@ const app = express();
 
 app.use(
   cors({
-    origin:
-      "https://stellular-buttercream-cd76fa.netlify.app",
+    origin: [
+      "http://localhost:5173",
+      "https://notes-app-mrigakshi.netlify.app"
+    ],
     credentials: true,
   })
 );
