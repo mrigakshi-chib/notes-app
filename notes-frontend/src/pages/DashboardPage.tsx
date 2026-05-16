@@ -223,6 +223,7 @@ function DashboardPage() {
   };
 
   const renderNoteCard = (note: Note) => {
+    const isOwner = note.ownerId === userId;
     return (
       <div
         key={note.id}
@@ -258,21 +259,23 @@ function DashboardPage() {
             </div>
           )}
 
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={() => togglePin(note.id)}
-              className="text-xl"
-            >
-              {note.isPinned ? "📌" : "📍"}
-            </button>
+          {isOwner && (
+            <div className="flex items-center gap-3 shrink-0">
+              <button
+                onClick={() => togglePin(note.id)}
+                className="text-xl"
+              >
+                {note.isPinned ? "📌" : "📍"}
+              </button>
 
-            <button
-              onClick={() => toggleLock(note.id)}
-              className="text-xl"
-            >
-              {note.isLocked ? "🔒" : "🔓"}
-            </button>
-          </div>
+              <button
+                onClick={() => toggleLock(note.id)}
+                className="text-xl"
+              >
+                {note.isLocked ? "🔒" : "🔓"}
+              </button>
+            </div>
+          )}
         </div>
 
         {editingId === note.id ? (
@@ -308,37 +311,39 @@ function DashboardPage() {
           </p>
         )}
 
-        <div className="flex flex-wrap gap-3 mt-4">
-          {editingId === note.id ? (
-            <button
-              onClick={() => updateNote(note.id)}
-              className="bg-green-500 text-white px-4 py-2 rounded-lg"
-            >
-              Save
-            </button>
-          ) : (
-            <button
-              onClick={() => startEditing(note)}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-            >
-              Edit
-            </button>
+        {isOwner && (
+          <div className="flex flex-wrap gap-3 mt-4">
+            {editingId === note.id ? (
+              <button
+                onClick={() => updateNote(note.id)}
+                className="bg-green-500 text-white px-4 py-2 rounded-lg"
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                onClick={() => startEditing(note)}
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+              >
+                Edit
+              </button>
+            )}
+
+              <button
+                onClick={() => shareNote(note.id)}
+                className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
+              >
+                Share
+              </button>
+
+              <button
+                onClick={() => deleteNote(note.id)}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
+              >
+                Delete
+              </button>
+            </div>
           )}
-
-          <button
-            onClick={() => shareNote(note.id)}
-            className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
-          >
-            Share
-          </button>
-
-          <button
-            onClick={() => deleteNote(note.id)}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
-          >
-            Delete
-          </button>
-        </div>
       </div>
     );
   };
