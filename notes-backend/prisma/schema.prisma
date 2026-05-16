@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String       @id @default(cuid())
+  email       String       @unique
+  password    String
+  createdAt   DateTime     @default(now())
+
+  notes       Note[]
+  sharedNotes SharedNote[]
+}
+
+model Note {
+  id          String       @id @default(cuid())
+
+  title       String
+  content     String
+
+  isPinned    Boolean      @default(false)
+
+  isLocked    Boolean      @default(false)
+  lockPin     String?
+
+  ownerId     String
+  owner       User         @relation(fields: [ownerId], references: [id])
+
+  sharedWith  SharedNote[]
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model SharedNote {
+  id      String @id @default(cuid())
+
+  noteId  String
+  userId  String
+
+  note    Note   @relation(fields: [noteId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@unique([noteId, userId])
+}
