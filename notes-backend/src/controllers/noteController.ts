@@ -118,6 +118,61 @@ export const getMyNotes = async (
     });
   }
 };
+
+export const getNoteById = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const userId = req.user?.userId;
+    const noteId = req.params.id as string;
+
+    const note = await prisma.note.findFirst({
+      where: {
+        id: noteId,
+        OR: [
+          { ownerId: userId },
+          {
+            sharedWith: {
+              some: {
+                userId,
+              },
+            },
+          },
+        ],
+      },
+      include: {
+        owner: {
+          select: {
+            email: true,
+          },
+        },
+        sharedWith: true,
+      },
+    });
+
+    if (!note) {
+      return res.status(404).json({
+        message: "Note not found",
+      });
+    }
+
+    if (note.isLocked) {
+      return res.status(200).json({
+        ...note,
+        content: "This note is locked",
+      });
+    }
+
+    return res.status(200).json(note);
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
 export const updateNote = async (
   req: AuthRequest,
   res: Response
@@ -228,7 +283,7 @@ export const shareNote = async (
   try {
     const noteId = req.params.id as string;
 
-    const { email } = req.body;
+    const email = req.body.email || req.body.share_with_email;
 
     const userId = req.user?.userId;
 

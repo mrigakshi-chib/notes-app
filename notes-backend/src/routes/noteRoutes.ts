@@ -3,6 +3,7 @@ import express from "express";
 import {
   createNote,
   getMyNotes,
+  getNoteById,
   updateNote,
   deleteNote,
   shareNote,
@@ -15,15 +16,20 @@ import { authenticateUser } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.post(
-  "/notes",
-  authenticateUser,
-  createNote
-);
+
 router.get(
   "/notes",
   authenticateUser,
   getMyNotes
+);
+router.get(
+  "/notes/:id",
+  authenticateUser, 
+  getNoteById);
+router.post(
+  "/notes",
+  authenticateUser,
+  createNote
 );
 router.put(
   "/notes/:id",
