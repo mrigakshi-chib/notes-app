@@ -29,16 +29,34 @@ app.get("/about", (req, res) => {
     email: "mrigakshichib@gmail.com",
     "my features": {
       "Pinned Notes":
-        "Allows users to pin important notes for quick access. I chose this feature to improve user productivity and note organization.",
+        "Users can pin important notes so they appear above regular notes. I chose this feature because it improves note organization and helps users quickly access important information.",
 
       "Locked Notes":
-        "Allows users to lock notes securely using a PIN. I chose this feature to improve privacy and demonstrate secure backend practices using hashed PIN storage.",
+        "Users can lock their own notes using a PIN. The PIN is hashed before being stored. I chose this feature to add a privacy layer and demonstrate secure handling of sensitive data.",
+
+      "Shared Notes Section":
+        "The dashboard separates notes into My Notes and Shared With Me. I chose this feature to make ownership clear and improve the user experience.",
+
+      "View-Only Shared Notes":
+        "Shared notes are view-only for the receiving user. They cannot edit, delete, pin, lock, or re-share notes they do not own. I chose this feature to keep permissions safe and logical.",
+
+      "Registered User Sharing":
+        "Notes can only be shared with users who are already registered in the app. I chose this to keep sharing controlled and avoid invalid or unknown recipients.",
 
       "Search Notes":
-        "Implemented a search endpoint to allow users to quickly find notes by title or content. I chose this feature to improve usability for larger note collections.",
+        "Users can search notes by title or content. I chose this feature because it helps users find information quickly as their number of notes increases.",
 
       "Pagination":
-        "Implemented pagination for the notes API to improve scalability and optimize API responses when handling large amounts of data."
+        "The notes API supports pagination using page and limit query parameters. I chose this feature to make the API more scalable and avoid returning too many notes at once.",
+
+      "Responsive Frontend":
+        "I built a responsive frontend that works on both desktop and mobile devices. I chose this feature so users can access and manage notes comfortably across screen sizes.",
+
+      "Dark Mode":
+        "The dashboard includes a dark mode toggle. I chose this feature to improve user experience and give users control over the app appearance.",
+
+      "Swagger API Documentation":
+        "The backend includes Swagger UI and OpenAPI JSON documentation. I chose this feature to make the API easier to understand, test, and review."
     },
   });
 });
