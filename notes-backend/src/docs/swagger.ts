@@ -180,56 +180,129 @@ const options: swaggerJSDoc.Options = {
       },
 
       "/notes/{id}": {
-        put: {
-          summary: "Update a note",
-          security: [
-            {
-                bearerAuth: [],
-            },
-        ],
-          parameters: [
-            {
-              in: "path",
-              name: "id",
-              required: true,
-
-              schema: {
-                type: "string",
-              },
-            },
-          ],
-
-          responses: {
-            "200": {
-              description:
-                "Note updated successfully",
-            },
-          },
+  get: {
+    summary: "Get a specific note by ID",
+    tags: ["Notes"],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    parameters: [
+      {
+        in: "path",
+        name: "id",
+        required: true,
+        schema: {
+          type: "string",
         },
+      },
+    ],
+    responses: {
+      "200": {
+        description: "Note fetched successfully",
+      },
+      "401": {
+        description: "Unauthorized",
+      },
+      "404": {
+        description: "Note not found",
+      },
+    },
+  },
 
-        delete: {
-          summary: "Delete a note",
+  put: {
+    summary: "Update a note",
+    tags: ["Notes"],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    parameters: [
+      {
+        in: "path",
+        name: "id",
+        required: true,
 
-          parameters: [
-            {
-              in: "path",
-              name: "id",
-              required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
 
-              schema: {
+    requestBody: {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            required: ["title", "content"],
+            properties: {
+              title: {
                 type: "string",
               },
-            },
-          ],
-
-          responses: {
-            "200": {
-              description:
-                "Note deleted successfully",
+              content: {
+                type: "string",
+              },
             },
           },
         },
       },
+    },
+
+    responses: {
+      "200": {
+        description: "Note updated successfully",
+      },
+      "401": {
+        description: "Unauthorized",
+      },
+      "403": {
+        description: "Forbidden",
+      },
+      "404": {
+        description: "Note not found",
+      },
+    },
+  },
+
+  delete: {
+    summary: "Delete a note",
+    tags: ["Notes"],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    parameters: [
+      {
+        in: "path",
+        name: "id",
+        required: true,
+
+        schema: {
+          type: "string",
+        },
+      },
+    ],
+
+    responses: {
+      "204": {
+        description: "Note deleted successfully",
+      },
+      "401": {
+        description: "Unauthorized",
+      },
+      "403": {
+        description: "Forbidden",
+      },
+      "404": {
+        description: "Note not found",
+      },
+    },
+  },
+},
 
       "/notes/{id}/share": {
         post: {
